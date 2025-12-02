@@ -61,7 +61,7 @@ jobs:
         id: set-image
         run: |
           IMAGE_URI="${{ steps.ecr-login.outputs.registry }}/${{ env.ECR_REPO_NAME}}:${{ env.IMAGE_TAG }}"
-          echo "image-uri=$IMAGE_URI" >> $GITHUB_OUTPUT4
+          echo "image-uri=$IMAGE_URI" >> $GITHUB_OUTPUT
   Deploy:
     runs-on: ubuntu-latest
     needs: Build  # Depends on Build job
@@ -84,8 +84,4 @@ jobs:
           echo "NEW_TASK_DEFINITION=$(aws ecs describe-task-definition --task-definition ${{ env.TASK_DEFINITION }} --query 'taskDefinition.taskDefinitionArn' --output text)" >> $GITHUB_ENV
       - name: Update ECS service
         run: |
-          aws ecs update-service --cluster ${{ env.ECS_CLUSTER }} --service ${{ env.ECS_SERVICE }} --task-definition ${{ env.TASK_DEFINITION }} --force-new-deployment
-
-
-
-
+          aws ecs update-service --cluster ${{ env.ECS_CLUSTER }} --service ${{ env.ECS_SERVICE }} --task-definition ${{ env.TASK_DEFINITION }} --force-new-deployment 
